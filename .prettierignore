@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+.nuxt/
+.vite/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# OS generated files
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# Environment files
+.env*
+!.env.example
+
+# Test coverage
+coverage/
+
+# Docker files
+Dockerfile*
+
+# Other
+*.min.js
+*.min.css

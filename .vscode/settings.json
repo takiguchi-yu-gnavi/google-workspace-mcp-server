@@ -1,0 +1,34 @@
+{
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "files.associations": {
+    "*.json": "jsonc",
+    ".env.*": "properties",
+    "*.mdx": "markdown"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.DS_Store": true
+  },
+  "search.exclude": {
+    "**/node_modules": true
+  },
+  "eslint.workingDirectories": ["packages/**/*"],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "cSpell.words": [
+    "cooldown",
+    "modelcontextprotocol"
+  ]
+}
