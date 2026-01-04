@@ -24,7 +24,7 @@
   "search.exclude": {
     "**/node_modules": true
   },
-  "eslint.workingDirectories": ["packages/**/*"],
+  "eslint.workingDirectories": ["src/**/*"],
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
   "cSpell.words": [

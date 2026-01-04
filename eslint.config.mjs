@@ -84,9 +84,25 @@ export default tseslint.config(
       'import-x/order': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index', 'object'],
+          groups: [
+            'builtin', // Node.js組み込みモジュール
+            'external', // node_modulesの外部ライブラリ
+            'internal', // 内部エイリアス（例: @/）
+            ['parent', 'sibling'], // 相対パス（../や./）
+            'index', // ./index
+            'object', // import log = console.log のようなオブジェクトimport
+            'type', // type import（最後に配置）
+          ],
+          pathGroups: [
+            {
+              pattern: '{.,..}/**/*.css',
+              group: 'type',
+              position: 'after',
+            },
+          ],
           alphabetize: { order: 'asc', caseInsensitive: true },
-          'newlines-between': 'always',
+          'newlines-between': 'never',
+          distinctGroup: false, // type importを別グループとして扱わない
         },
       ],
       'import-x/no-duplicates': 'error',
@@ -100,5 +116,5 @@ export default tseslint.config(
   },
 
   // 8. 最後にPrettier
-  prettierConfig
+  prettierConfig,
 );
