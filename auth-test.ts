@@ -1,8 +1,8 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { authenticate } from '@google-cloud/local-auth';
-import { google } from 'googleapis';
 import type { Credentials } from 'google-auth-library';
+import { google } from 'googleapis';
 
 const SCOPES = ['https://www.googleapis.com/auth/presentations', 'https://www.googleapis.com/auth/drive.file'];
 

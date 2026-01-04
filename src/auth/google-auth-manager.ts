@@ -1,7 +1,7 @@
 import * as fs from 'fs/promises';
-import * as path from 'path';
-import { google } from 'googleapis';
+import path from 'path';
 import type { Credentials, OAuth2Client } from 'google-auth-library';
+import { google } from 'googleapis';
 
 interface CredentialsConfig {
   client_id: string;

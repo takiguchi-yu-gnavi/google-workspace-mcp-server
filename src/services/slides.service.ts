@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
-import { BaseGoogleService } from './base.service';
-import type { ToolArgs, ToolDefinition, ToolResult } from '../types/mcp';
+import { BaseGoogleService } from './base.service.js';
+import type { ToolArgs, ToolDefinition, ToolResult } from '../types/mcp.js';
 
 export class SlidesService extends BaseGoogleService {
   /**

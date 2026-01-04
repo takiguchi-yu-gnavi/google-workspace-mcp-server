@@ -1,6 +1,6 @@
-import type { ToolArgs, ToolDefinition, ToolResult } from '../types/mcp';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { OAuth2Client } from 'google-auth-library';
+import type { ToolArgs, ToolDefinition, ToolResult } from '../types/mcp.js';
 
 /**
  * すべての Google サービスのインターフェース

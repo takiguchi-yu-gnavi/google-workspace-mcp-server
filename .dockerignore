@@ -1,0 +1,8 @@
+node_modules
+dist
+npm-debug.log
+.git
+.env
+# 認証情報はマウントするのでイメージには含めない
+credentials.json
+token.json

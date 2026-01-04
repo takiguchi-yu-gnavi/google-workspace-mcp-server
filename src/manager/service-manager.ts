@@ -1,5 +1,5 @@
-import type { WorkspaceService } from '../services/base.service';
-import type { ToolArgs, ToolDefinition, ToolResult } from '../types/mcp';
+import type { WorkspaceService } from '../services/base.service.js';
+import type { ToolArgs, ToolDefinition, ToolResult } from '../types/mcp.js';
 
 export class ServiceManager {
   // 登録されたサービスを保持するマップ

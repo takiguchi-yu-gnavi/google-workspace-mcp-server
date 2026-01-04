@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
-    // 厳格系
+    /* 厳格系 */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
 
-    // パフォーマンスと出力
+    /* パフォーマンスと出力 */
     "incremental": true,
     "declaration": true,
     "declarationMap": true,
@@ -25,6 +25,6 @@
     "baseUrl": ".",
     "paths": {}
   },
-  "include": ["**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "auth-test.ts"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -91,18 +91,17 @@ export default tseslint.config(
             ['parent', 'sibling'], // 相対パス（../や./）
             'index', // ./index
             'object', // import log = console.log のようなオブジェクトimport
-            'type', // type import（最後に配置）
           ],
           pathGroups: [
             {
               pattern: '{.,..}/**/*.css',
-              group: 'type',
+              group: 'object',
               position: 'after',
             },
           ],
           alphabetize: { order: 'asc', caseInsensitive: true },
           'newlines-between': 'never',
-          distinctGroup: false, // type importを別グループとして扱わない
+          distinctGroup: false, // type importを通常のimportと同じグループ内で扱う
         },
       ],
       'import-x/no-duplicates': 'error',
