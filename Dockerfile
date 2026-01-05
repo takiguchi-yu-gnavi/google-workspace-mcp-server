@@ -25,5 +25,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 RUN npm install --production
 
-# MCPサーバーは標準入出力を使用するため、起動コマンドを直接指定
-ENTRYPOINT ["node", "dist/index.js"]
+# デフォルトは MCP サーバー起動
+# setup モード: docker run -it ... npm run setup
+# サーバーモード: docker run -i ... (引数なし)
+CMD ["node", "dist/index.js"]

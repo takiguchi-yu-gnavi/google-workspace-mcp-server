@@ -15,7 +15,6 @@ export default [
       '**/coverage/**',
       '**/cdk.out/**',
       '**/*.js.map',
-      'auth-test.ts',
     ],
   },
 
