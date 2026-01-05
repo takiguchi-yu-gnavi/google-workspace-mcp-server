@@ -6,8 +6,8 @@
   "workspaces": [],
   "scripts": {
     "clean-install": "rm -rf node_modules package-lock.json && npm install",
-    "setup": "node ./dist/scripts/setup-token.js",
-    "setup:dev": "node ./src/scripts/setup-token.ts",
+    "setup": "node ./dist/scripts/oauth-server.js",
+    "setup:dev": "node ./src/scripts/oauth-server.ts",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

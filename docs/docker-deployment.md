@@ -8,8 +8,8 @@
 
 ```
 ┌─────────────────┐
-│ Claude Desktop  │
-│  / MCP Client   │
+│ MCP Client      │
+│ (GitHub Copilot)│
 └────────┬────────┘
          │ stdio
 ┌────────▼────────────────────────┐
@@ -72,7 +72,11 @@ cp ~/Downloads/credentials.json .
 ### ステップ 3: 初回トークン取得（対話的セットアップ）
 
 ```sh
+# 空の token.json ファイルを作成（まだ存在しない場合）
+touch token.json
+
 docker run -it --rm \
+  -p 8000:8000 \
   -v $(pwd)/credentials.json:/app/credentials.json \
   -v $(pwd)/token.json:/app/token.json \
   google-workspace-mcp npm run setup
@@ -85,14 +89,25 @@ docker run -it --rm \
 ║   Google Workspace MCP Server - 初回トークンセットアップ   ║
 ╚═══════════════════════════════════════════════════════════╝
 
+🔍 credentials.json を検証しています...
 ✅ credentials.json の検証に成功しました。
 
-🔐 Google OAuth 認証を開始します...
-ブラウザが自動的に開きます。Google アカウントでログインしてください。
+🚀 OAuth サーバーを起動しました: http://localhost:8000
 
-✅ 認証に成功しました！
+📋 次の手順に従ってください:
 
-💾 トークンを保存しました: /app/token.json
+  1. 以下の URL をブラウザで開いてください:
+
+     https://accounts.google.com/o/oauth2/auth?...
+
+  2. Google アカウントでログインして、アクセスを許可してください
+  3. 認証が完了すると、自動的にこのサーバーに戻ります
+
+⏳ 認証完了を待っています...
+
+🔄 認証コードをトークンに交換しています...
+💾 トークンを保存しています...
+✅ トークンを保存しました: /app/token.json
 
 🧪 トークンの有効性をテストしています...
 ✅ トークンが有効です！Google Slides API との疎通に成功しました。
@@ -109,13 +124,13 @@ docker run -it --rm \
 
 ### ステップ 4: MCP クライアント設定
 
-#### Claude Desktop の場合
+#### GitHub Copilot (VS Code) の場合
 
-`~/.config/claude/mcp.json` (macOS の場合) を編集：
+`.vscode/settings.json` を編集：
 
 ```json
 {
-  "mcpServers": {
+  "mcp.servers": {
     "google-workspace": {
       "command": "docker",
       "args": [
@@ -123,9 +138,9 @@ docker run -it --rm \
         "--rm",
         "-i",
         "-v",
-        "/Users/YOUR_USERNAME/google-workspace-mcp/credentials.json:/app/credentials.json:ro",
+        "/absolute/path/to/credentials.json:/app/credentials.json:ro",
         "-v",
-        "/Users/YOUR_USERNAME/google-workspace-mcp/token.json:/app/token.json",
+        "/absolute/path/to/token.json:/app/token.json",
         "google-workspace-mcp"
       ]
     }
@@ -135,36 +150,12 @@ docker run -it --rm \
 
 **⚠️ 注意：**
 
-- `YOUR_USERNAME` を実際のユーザー名に置き換えてください
-- パスは絶対パスで指定してください
-
-#### VS Code の場合
-
-`.vscode/mcp.json` を作成：
-
-```json
-{
-  "servers": {
-    "google-workspace": {
-      "command": "docker",
-      "args": [
-        "run",
-        "--rm",
-        "-i",
-        "-v",
-        "${workspaceFolder}/google-workspace-mcp/credentials.json:/app/credentials.json:ro",
-        "-v",
-        "${workspaceFolder}/google-workspace-mcp/token.json:/app/token.json",
-        "google-workspace-mcp"
-      ]
-    }
-  }
-}
-```
+- `/absolute/path/to/` を実際の絶対パスに置き換えてください
+- 例: `/Users/YOUR_USERNAME/google-workspace-mcp/credentials.json`
 
 ### ステップ 5: 動作確認
 
-Claude Desktop を再起動し、以下のようなプロンプトで動作確認：
+VS Code を再起動し、GitHub Copilot Chat で以下のようなプロンプトで動作確認：
 
 ```
 Google Slides で「テストプレゼンテーション」というタイトルの新しいプレゼンテーションを作成してください。
@@ -200,6 +191,7 @@ rm token.json
 
 # セットアップを再実行
 docker run -it --rm \
+  -p 8000:8000 \
   -v $(pwd)/credentials.json:/app/credentials.json \
   -v $(pwd)/token.json:/app/token.json \
   google-workspace-mcp npm run setup
@@ -348,7 +340,7 @@ docker run -i --rm \
   -v $(pwd)/token.json:/app/token.json \
   google-workspace-mcp
 
-# 3. Claude Desktop を再起動
+# 3. MCP クライアント（VS Code など）を再起動
 ```
 
 **注意**: 既存の `token.json` はそのまま使用可能です。再認証は不要です。

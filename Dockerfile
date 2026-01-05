@@ -20,6 +20,9 @@ ENV GOOGLE_TOKEN_PATH=/app/token.json
 # 自己署名証明書環境向け（本番環境では0に設定しないこと）
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
+# OAuth コールバック用ポートを公開
+EXPOSE 8000
+
 # ビルド成果物と本番用依存関係のみをコピー
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
