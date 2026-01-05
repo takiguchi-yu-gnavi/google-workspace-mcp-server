@@ -19,6 +19,7 @@ export default tseslint.config(
       '**/coverage/**',
       '**/cdk.out/**',
       '**/*.js.map',
+      'auth-test.ts',
     ],
   },
 

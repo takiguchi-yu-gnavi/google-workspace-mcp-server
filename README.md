@@ -75,3 +75,18 @@ classDiagram
     SlidesService --|> BaseGoogleService
     SheetsService --|> BaseGoogleService
 ```
+
+## 開発の始め方
+
+```sh
+npm run type-check
+npm run lint
+npm run format
+npm run build
+```
+
+## Docker コンテナビルド
+
+```sh
+docker build --no-cache -t google-workspace-mcp .
+```
