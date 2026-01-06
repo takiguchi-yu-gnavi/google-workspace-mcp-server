@@ -24,54 +24,14 @@ Google Workspace MCP Server は、GitHub Copilot などの AI アシスタント
 
 ## クイックスタート
 
-詳細なセットアップ手順は **[docs/setup.md](docs/setup.md)** を参照してください。
-
 ### 簡単な流れ
 
-1. Google Cloud で OAuth 認証情報を作成
-2. `credentials.json` をダウンロード
+1. Google Cloud で OAuth 認証情報を作成（初回のみ）
+2. `credentials.json` をダウンロード（初回のみ）
 3. トークンを取得（初回のみ）
 4. GitHub Copilot で使用開始
 
-```sh
-# 作業ディレクトリを作成
-mkdir -p ~/google-workspace-mcp
-cd ~/google-workspace-mcp
-
-# credentials.json を配置して token.json を作成
-touch token.json
-
-# トークン取得（初回のみ）
-docker run -it --rm \
-  -p 8000:8000 \
-  -v $(pwd)/credentials.json:/app/credentials.json \
-  -v $(pwd)/token.json:/app/token.json \
-  google-workspace-mcp npm run setup
-```
-
-## GitHub Copilot との連携
-
-`.vscode/settings.json`:
-
-```json
-{
-  "mcp.servers": {
-    "google-workspace": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-v",
-        "/absolute/path/to/credentials.json:/app/credentials.json:ro",
-        "-v",
-        "/absolute/path/to/token.json:/app/token.json",
-        "google-workspace-mcp"
-      ]
-    }
-  }
-}
-```
+詳細なセットアップ手順は **[docs/setup.md](docs/setup.md)** を参照してください。
 
 ## プロジェクト構成
 
@@ -166,28 +126,6 @@ classDiagram
 
 > **Note**: 図は代表的なクラスのみを表示しています。実際には Slides/Drive サービスや各種コマンドクラスも同様のパターンで実装されています。
 
-### パターンの利点
-
-1. **拡張性**: 新しいサービスやコマンドを既存コードを変更せずに追加可能
-2. **保守性**: 各コマンドが独立しているため、テストと修正が容易
-3. **責任の分離**: サービス管理、コマンド実行、認証処理が明確に分離
-4. **再利用性**: 共通処理を基底クラスにまとめることで重複を排除
-
-### 開発コマンド
-
-```sh
-npm run type-check
-npm run lint
-npm run format
-npm run build
-```
-
-## 参考ドキュメント
-
-- [docs/setup.md](docs/setup.md) - 詳細なセットアップガイド
-- [docs/how-to-create-credentials.md](docs/how-to-create-credentials.md) - Google Cloud 認証情報の作成方法
-- [docs/docker-deployment.md](docs/docker-deployment.md) - 社内配布向けガイド
-
-## 参考プロジェクト
+## 参考にしたプロジェクト
 
 - [google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp)
