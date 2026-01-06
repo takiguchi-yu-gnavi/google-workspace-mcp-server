@@ -3,9 +3,9 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import { GoogleAuthManager } from './auth/google-auth-manager.js';
 import { ServiceManager } from './manager/service-manager.js';
-import { DriveService } from './services/drive/drive.service.js';
-import { SheetsService } from './services/sheets/sheets.service.js';
-import { SlidesService } from './services/slides/slides.service.js';
+import { DriveService } from './tools/drive/drive.service.js';
+import { SheetsService } from './tools/sheets/sheets.service.js';
+import { SlidesService } from './tools/slides/slides.service.js';
 import type { ToolArgs } from './types/mcp.js';
 
 /**

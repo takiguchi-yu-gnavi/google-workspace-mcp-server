@@ -1,5 +1,5 @@
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import type { WorkspaceService } from '../services/base/service.interface.js';
+import type { WorkspaceService } from '../tools/base/service.interface.js';
 import type { ToolArgs, ToolDefinition } from '../types/mcp.js';
 
 /**
