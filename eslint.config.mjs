@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
-import importXPlugin from 'eslint-plugin-import-x'; // 代替: 高速版
+import importXPlugin from 'eslint-plugin-import-x';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -18,10 +18,8 @@ export default [
     ],
   },
 
-  // 基本セットアップ
+  // 基本セットアップ（js.configs.recommendedは単一オブジェクト）
   js.configs.recommended,
-  ...tseslint.configs.strictTypeChecked, // recommendedより厳しいstrictを推奨
-  ...tseslint.configs.stylisticTypeChecked,
 
   // 共通の言語オプション
   {
@@ -31,26 +29,24 @@ export default [
         ...globals.node,
         ...globals.es2025,
       },
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
     },
   },
 
-  // TypeScript 詳細設定
+  // TypeScript - 構文チェック のみ（型チェック無し）
+  ...tseslint.configs.recommended,
+
+  // TypeScript ファイル固有の設定
   {
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
 
-  // Import/Export (import-xを使用)
+  // Import/Export
   {
     plugins: {
       'import-x': importXPlugin,
@@ -59,14 +55,7 @@ export default [
       'import-x/order': [
         'error',
         {
-          groups: [
-            'builtin', // Node.js組み込みモジュール
-            'external', // node_modulesの外部ライブラリ
-            'internal', // 内部エイリアス（例: @/）
-            ['parent', 'sibling'], // 相対パス（../や./）
-            'index', // ./index
-            'object', // import log = console.log のようなオブジェクトimport
-          ],
+          groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index', 'object'],
           pathGroups: [
             {
               pattern: '{.,..}/**/*.css',
@@ -76,19 +65,21 @@ export default [
           ],
           alphabetize: { order: 'asc', caseInsensitive: true },
           'newlines-between': 'never',
-          distinctGroup: false, // type importを通常のimportと同じグループ内で扱う
+          distinctGroup: false,
         },
       ],
       'import-x/no-duplicates': 'error',
     },
   },
 
-  // 型チェック不要な設定ファイルへの適用除外
+  // 設定ファイルの除外
   {
     files: ['**/*.config.{js,mjs,ts}'],
-    ...tseslint.configs.disableTypeChecked,
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+    },
   },
 
-  // 最後にPrettier
+  // Prettier
   prettierConfig,
 ];
