@@ -1,7 +1,7 @@
-import { BaseCommandService } from '../base/service.interface.js';
-import { GetSpreadsheetInfoCommand } from './commands/get-spreadsheet-info.command.js';
-import { ListSpreadsheetsCommand } from './commands/list-spreadsheets.command.js';
-import { ReadSheetValuesCommand } from './commands/read-sheet-values.command.js';
+import { BaseCommandService } from '@/tools/base/service.interface.js';
+import { GetSpreadsheetInfoCommand } from '@/tools/sheets/commands/get-spreadsheet-info.command.js';
+import { ListSpreadsheetsCommand } from '@/tools/sheets/commands/list-spreadsheets.command.js';
+import { ReadSheetValuesCommand } from '@/tools/sheets/commands/read-sheet-values.command.js';
 
 /**
  * Google Sheets サービス
