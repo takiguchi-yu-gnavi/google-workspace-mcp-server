@@ -25,7 +25,7 @@ export default {
   // ファイル固有の設定
   overrides: [
     {
-      files: '*.{css, scss}',
+      files: '*.{css,scss}',
       options: {
         singleQuote: false,
       },
