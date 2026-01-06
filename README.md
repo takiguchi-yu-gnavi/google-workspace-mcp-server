@@ -99,7 +99,7 @@ src/
 
 ```mermaid
 classDiagram
-    %% インターフェースと基底クラス
+    %% コアインターフェース
     class Command {
         <<interface>>
         +getToolDefinition() ToolDefinition
@@ -112,96 +112,56 @@ classDiagram
         +execute(toolName, args) Promise~CallToolResult~
     }
 
+    %% 基底クラスとマネージャー
     class BaseCommandService {
         <<abstract>>
         #auth: OAuth2Client
         #commands: Map~string, Command~
-        +constructor(auth)
         #registerCommands()* void
-        #registerCommand(command) void
         +getTools() ToolDefinition[]
         +execute(toolName, args) Promise~CallToolResult~
     }
 
-    %% サービスマネージャー（ファクトリーパターン）
     class ServiceManager {
         -services: Map~string, WorkspaceService~
-        +registerService(serviceName, service) void
+        +registerService(service) void
         +getTools() ToolDefinition[]
         +handleToolCall(name, args) Promise~CallToolResult~
     }
 
-    %% 具体的なサービス（ストラテジーパターン）
+    %% 具体例（代表）
     class SheetsService {
         +registerCommands() void
     }
 
-    class SlidesService {
-        +registerCommands() void
-    }
-
-    class DriveService {
-        +registerCommands() void
-    }
-
-    %% 具体的なコマンド（コマンドパターン）
     class ListSpreadsheetsCommand {
         -auth: OAuth2Client
         +getToolDefinition() ToolDefinition
         +execute(args) Promise~CallToolResult~
     }
 
-    class GetSpreadsheetInfoCommand {
-        -auth: OAuth2Client
-        +getToolDefinition() ToolDefinition
-        +execute(args) Promise~CallToolResult~
-    }
-
-    class ReadSheetValuesCommand {
-        -auth: OAuth2Client
-        +getToolDefinition() ToolDefinition
-        +execute(args) Promise~CallToolResult~
-    }
-
-    class CreatePresentationCommand {
-        -auth: OAuth2Client
-        +getToolDefinition() ToolDefinition
-        +execute(args) Promise~CallToolResult~
-    }
-
-    class SearchDriveFilesCommand {
-        -auth: OAuth2Client
-        +getToolDefinition() ToolDefinition
-        +execute(args) Promise~CallToolResult~
-    }
-
-    %% 関係性の定義
+    %% 関係性
     WorkspaceService <|.. BaseCommandService : implements
     BaseCommandService <|-- SheetsService : extends
-    BaseCommandService <|-- SlidesService : extends
-    BaseCommandService <|-- DriveService : extends
-
     ServiceManager o-- WorkspaceService : manages
-
     Command <|.. ListSpreadsheetsCommand : implements
-    Command <|.. GetSpreadsheetInfoCommand : implements
-    Command <|.. ReadSheetValuesCommand : implements
-    Command <|.. CreatePresentationCommand : implements
-    Command <|.. SearchDriveFilesCommand : implements
-
     BaseCommandService o-- Command : uses
-
     SheetsService ..> ListSpreadsheetsCommand : creates
-    SheetsService ..> GetSpreadsheetInfoCommand : creates
-    SheetsService ..> ReadSheetValuesCommand : creates
-    SlidesService ..> CreatePresentationCommand : creates
-    DriveService ..> SearchDriveFilesCommand : creates
 
-    note for ServiceManager "ファクトリーパターン:\n複数のサービスを統合管理し\n適切なサービスに処理を振り分け"
-    note for BaseCommandService "テンプレートメソッドパターン:\n共通処理を提供し、サブクラスで\n具体的なコマンド登録を実装"
-    note for SheetsService "ストラテジーパターン:\n各サービスを独立した戦略として実装"
-    note for ListSpreadsheetsCommand "コマンドパターン:\n各操作を独立したコマンドとして\nカプセル化"
+    note for ServiceManager "ファクトリーパターン"
+    note for BaseCommandService "テンプレートメソッド"
+    note for SheetsService "ストラテジー"
+    note for ListSpreadsheetsCommand "コマンド"
 ```
+
+> **Note**: 図は代表的なクラスのみを表示しています。実際には Slides/Drive サービスや各種コマンドクラスも同様のパターンで実装されています。
+
+### パターンの利点
+
+1. **拡張性**: 新しいサービスやコマンドを既存コードを変更せずに追加可能
+2. **保守性**: 各コマンドが独立しているため、テストと修正が容易
+3. **責任の分離**: サービス管理、コマンド実行、認証処理が明確に分離
+4. **再利用性**: 共通処理を基底クラスにまとめることで重複を排除
 
 ### 開発コマンド
 
