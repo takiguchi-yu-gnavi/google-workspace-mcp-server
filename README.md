@@ -99,6 +99,14 @@ src/
 
 ```mermaid
 classDiagram
+    %% 認証管理
+    class GoogleAuthManager {
+        -auth: OAuth2Client
+        -credentialsPath: string
+        -tokenPath: string
+        +getAuth() Promise~OAuth2Client~
+    }
+
     %% コアインターフェース
     class Command {
         <<interface>>
@@ -141,6 +149,7 @@ classDiagram
     }
 
     %% 関係性
+    GoogleAuthManager ..> BaseCommandService : provides OAuth2Client
     WorkspaceService <|.. BaseCommandService : implements
     BaseCommandService <|-- SheetsService : extends
     ServiceManager o-- WorkspaceService : manages
@@ -148,6 +157,7 @@ classDiagram
     BaseCommandService o-- Command : uses
     SheetsService ..> ListSpreadsheetsCommand : creates
 
+    note for GoogleAuthManager "シングルトン的な\n認証管理"
     note for ServiceManager "ファクトリーパターン"
     note for BaseCommandService "テンプレートメソッド"
     note for SheetsService "ストラテジー"
