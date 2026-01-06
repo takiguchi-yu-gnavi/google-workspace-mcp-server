@@ -3,8 +3,25 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import { GoogleAuthManager } from './auth/google-auth-manager.js';
 import { ServiceManager } from './manager/service-manager.js';
-import { SlidesService } from './services/slides.service.js';
+import { SlidesService } from './services/slides/slides.service.js';
 import type { ToolArgs } from './types/mcp.js';
+
+/**
+ * JSON Schema を Zod スキーマに変換するヘルパー関数
+ */
+const convertToZodSchema = (inputSchema: Record<string, unknown>): Record<string, z.ZodType> => {
+  const properties = inputSchema.properties as Record<string, { type: string; description?: string }>;
+  const zodSchema: Record<string, z.ZodType> = {};
+
+  for (const [key, prop] of Object.entries(properties)) {
+    if (prop.type === 'string') {
+      zodSchema[key] = z.string().describe(prop.description ?? '');
+    }
+    // 今後、他の型（number, boolean 等）にも対応可能
+  }
+
+  return zodSchema;
+};
 
 async function main() {
   const server = new McpServer({
@@ -16,25 +33,24 @@ async function main() {
     const authManager = new GoogleAuthManager();
     const auth = await authManager.getAuth();
 
+    // サービスを登録
     const serviceManager = new ServiceManager();
     serviceManager.registerService('slides', new SlidesService(auth));
+    // 今後、sheets や他のサービスもここに追加
+    // serviceManager.registerService('sheets', new SheetsService(auth));
 
+    // 全サービスからツール定義を取得
     const allTools = serviceManager.getTools();
 
+    // 各ツールを MCP サーバーに登録
     for (const tool of allTools) {
-      // 3つの引数を個別に渡す形式に修正
       server.registerTool(
-        tool.name, // 第1引数: 名前
+        tool.name,
         {
-          // 第2引数: 設定 (スキーマ・説明)
           description: tool.description ?? 'Google Workspace tool',
-          inputSchema:
-            tool.name === 'slides_get_presentation'
-              ? { presentationId: z.string().describe('ID of the presentation') }
-              : { title: z.string().describe('Title of presentation') },
+          inputSchema: convertToZodSchema(tool.inputSchema as Record<string, unknown>),
         },
         async (args: ToolArgs) => {
-          // 第3引数: コールバック
           return await serviceManager.handleToolCall(tool.name, args);
         },
       );

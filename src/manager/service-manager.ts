@@ -1,9 +1,12 @@
-import type { WorkspaceService } from '../services/base.service.js';
-import type { ToolArgs, ToolDefinition, ToolResult } from '../types/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { WorkspaceService } from '../services/base/service.interface.js';
+import type { ToolArgs, ToolDefinition } from '../types/mcp.js';
 
+/**
+ * すべての Google Workspace サービスを統合管理するマネージャー
+ */
 export class ServiceManager {
-  // 登録されたサービスを保持するマップ
-  private services = new Map<string, WorkspaceService>();
+  private readonly services = new Map<string, WorkspaceService>();
 
   /**
    * 新しいサービス（Slides, Sheets等）をマネージャーに登録する
@@ -15,7 +18,7 @@ export class ServiceManager {
 
   /**
    * 登録されている全サービスからツール定義を集約する
-   * MCPの ListToolsRequest で使用
+   * MCP の ListToolsRequest で使用
    */
   getTools(): ToolDefinition[] {
     const allTools: ToolDefinition[] = [];
@@ -27,14 +30,11 @@ export class ServiceManager {
 
   /**
    * ツール名に基づいて適切なサービスに処理を振り分ける
-   * MCPの CallToolRequest で使用
+   * MCP の CallToolRequest で使用
    */
-  async handleToolCall(name: string, args: ToolArgs): ToolResult {
-    // ツール名からサービスを特定（例: "slides_create" なら "slides" を探す）
-    // サービスをまたぐツール名の衝突を防ぐため、プレフィックスでの判定を推奨
+  async handleToolCall(name: string, args: ToolArgs): Promise<CallToolResult> {
+    // 登録されている全サービスから該当ツールを探す
     for (const service of this.services.values()) {
-      // そのサービスが該当ツールを持っているか、
-      // またはツール名がサービス名で始まっているかをチェック
       const tools = service.getTools();
       if (tools.some((t) => t.name === name)) {
         return await service.execute(name, args);
