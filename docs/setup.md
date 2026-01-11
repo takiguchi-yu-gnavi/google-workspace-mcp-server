@@ -2,55 +2,44 @@
 
 Google Workspace MCP Server 利用者が Docker コンテナとしてサーバーを起動し、GitHub Copilot から Google Workspace サービスを操作できるようにするためのセットアップ手順を説明します。
 
+## 目次
+
+1. [前提条件](#前提条件)
+2. [セットアップ手順](#セットアップ手順)
+3. [GitHub Copilot との連携/設定](#github-copilot-との連携設定)
+
+---
+
 ## 前提条件
 
 - Docker がインストールされていること
 - MacOS 環境
+- Google Workspace アカウント
+- AWS アカウント（Docker イメージ取得用）
 
-## セットアップ手順（初回のみ）
+---
 
-### OAuth 認証情報の準備
+## セットアップ手順
 
-[how-to-create-credentials.md](how-to-create-credentials.md) を参照してください。
+### 1. OAuth 認証情報（CLIENT_ID、SECRET）を取得
 
-### 作業ディレクトリの準備
+Google Cloud Console で OAuth 認証情報を作成し、`credentials.json` ファイルを取得します。
 
-```sh
-# 任意の作業ディレクトリを作成
-mkdir -p ~/google-workspace-mcp
-cd ~/google-workspace-mcp
+👉 **詳細手順**: [OAuth 認証情報の取得手順](./how-to-create-credentials.md)
 
-# ダウンロードした credentials.json をこのディレクトリに配置
-# 空の token.json ファイルを作成
-touch token.json
-```
+### 2. トークンを取得
 
-### Docker イメージの取得
+`credentials.json` を使用して、Google Workspace にアクセスするためのトークンを取得します。
 
-```sh
-# ECR にログイン (Login Succeeded が表示されれば成功)
-aws ecr get-login-password --region YOUR_AWS_REGION --profile YOUR_AWS_PROFILE | docker login --username AWS --password-stdin YOUR_AWS_ACCOUNT_ID.dkr.ecr.YOUR_AWS_REGION.amazonaws.com
-# Docker イメージを取得
-docker pull YOUR_AWS_ACCOUNT_ID.dkr.ecr.YOUR_AWS_REGION.amazonaws.com/google-workspace-mcp:latest
-```
+👉 **詳細手順**: [トークンの取得手順](./how-to-get-token.md)
 
-### トークンの取得
+---
 
-```sh
-cd ~/google-workspace-mcp
+## GitHub Copilot の設定
 
-docker run -it --rm \
-  -p 8000:8000 \
-  -v $(pwd)/credentials.json:/app/credentials.json \
-  -v $(pwd)/token.json:/app/token.json \
-  google-workspace-mcp npm run setup
-```
+### 1. VS Code の設定
 
-コンソールに表示された URL を開き、Google アカウントで認証してください。
-
-## GitHub Copilot との連携
-
-VS Code の設定ファイル `.vscode/mcp.json` を編集：
+VS Code の設定ファイル `.vscode/mcp.json` を作成/編集します：
 
 ```json
 {
@@ -62,16 +51,60 @@ VS Code の設定ファイル `.vscode/mcp.json` を編集：
         "--rm",
         "-i",
         "-v",
-        "/absolute/path/to/google-workspace-mcp/credentials.json:/app/credentials.json",
+        "/Users/YOUR_USERNAME/google-workspace-mcp/credentials.json:/app/credentials.json",
         "-v",
-        "/absolute/path/to/google-workspace-mcp/token.json:/app/token.json",
-        "YOUR_AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/google-workspace-mcp:latest"
+        "/Users/YOUR_USERNAME/google-workspace-mcp/token.json:/app/token.json",
+        "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/google-workspace-mcp:latest"
       ]
     }
   }
 }
 ```
 
-**重要**: `/absolute/path/to/` の部分を実際の絶対パスに置き換えてください。
+> **重要**:
+>
+> - `/Users/YOUR_USERNAME/` の部分を実際のホームディレクトリパスに置き換えてください
+> - Docker イメージのURLは、トークン取得時に使用したものと同じものを指定してください
+
+### 2. 接続確認
+
+VS Code を再起動すると、GitHub Copilot から Google Workspace MCP Server に接続されます。
+
+### 3. 使用例
+
+#### ユースケース例
+
+**📊 Google Sheets のデータ取得（URL指定）**
+
+```
+GitHub Copilot: このスプレッドシートの最新の売上データを取得してください
+スプレッドシート ID: 1ABC123...XYZ
+```
+
+**📄 Google Slides の特定ページを読む（URL指定）**
+
+```
+GitHub Copilot: このプレゼンテーションの1ページ目の内容を教えてください
+プレゼンテーション ID: 1ABC123...XYZ
+```
+
+**📁 Google Drive フォルダの内容確認（URL指定）**
+
+```
+GitHub Copilot: このフォルダ内のファイル一覧を取得してください
+フォルダ ID: 1ABC123...XYZ
+```
+
+**🔍 ファイル検索（URLが不明な場合）**
+
+```
+GitHub Copilot: Google Drive で「議事録」というキーワードを含むファイルを検索してください
+```
+
+> **推奨**:
+>
+> URL が判明している場合は直接 ID もしくは URL を指定することで、Google Drive 内の大量ドキュメントから検索する処理が不要になり、より迅速で正確な結果が得られます。
+
+---
 
 以上でセットアップは完了です。GitHub Copilot から Google Workspace の操作が可能になります。

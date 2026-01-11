@@ -26,10 +26,9 @@ Google Workspace MCP Server は、GitHub Copilot などの AI アシスタント
 
 ### 簡単な流れ
 
-1. Google Cloud で OAuth 認証情報を作成（初回のみ）
-2. `credentials.json` をダウンロード（初回のみ）
-3. トークンを取得（初回のみ）
-4. GitHub Copilot で使用開始
+1. Google Cloud で OAuth 認証情報（CLIENT_ID, SECRET）を作成（初回のみ）
+2. OAuth 認証情報をもとに Google Workspace の機能を操作するためのトークンを取得（初回のみ）
+3. GitHub Copilot で使用開始
 
 詳細なセットアップ手順は **[docs/setup.md](docs/setup.md)** を参照してください。
 
@@ -125,6 +124,12 @@ classDiagram
 ```
 
 > **Note**: 図は代表的なクラスのみを表示しています。実際には Slides/Drive サービスや各種コマンドクラスも同様のパターンで実装されています。
+
+## 開発者向け： Docker コンテナのデプロイメント方法
+
+以下のファイルを参照してください：
+
+- [docs/docker-deployment.md](docs/docker-deployment.md)
 
 ## 参考にしたプロジェクト
 
