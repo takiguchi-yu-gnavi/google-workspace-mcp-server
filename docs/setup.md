@@ -28,13 +28,17 @@ touch token.json
 ### Docker イメージの取得
 
 ```sh
+# ECR にログイン (Login Succeeded が表示されれば成功)
 aws ecr get-login-password --region YOUR_AWS_REGION --profile YOUR_AWS_PROFILE | docker login --username AWS --password-stdin YOUR_AWS_ACCOUNT_ID.dkr.ecr.YOUR_AWS_REGION.amazonaws.com
+# Docker イメージを取得
 docker pull YOUR_AWS_ACCOUNT_ID.dkr.ecr.YOUR_AWS_REGION.amazonaws.com/google-workspace-mcp:latest
 ```
 
 ### トークンの取得
 
 ```sh
+cd ~/google-workspace-mcp
+
 docker run -it --rm \
   -p 8000:8000 \
   -v $(pwd)/credentials.json:/app/credentials.json \
@@ -42,7 +46,7 @@ docker run -it --rm \
   google-workspace-mcp npm run setup
 ```
 
-ブラウザで表示された URL を開き、Google アカウントで認証してください。
+コンソールに表示された URL を開き、Google アカウントで認証してください。
 
 ## GitHub Copilot との連携
 
@@ -58,10 +62,10 @@ VS Code の設定ファイル `.vscode/mcp.json` を編集：
         "--rm",
         "-i",
         "-v",
-        "/absolute/path/to/credentials.json:/app/credentials.json",
+        "/absolute/path/to/google-workspace-mcp/credentials.json:/app/credentials.json",
         "-v",
-        "/absolute/path/to/token.json:/app/token.json",
-        "google-workspace-mcp"
+        "/absolute/path/to/google-workspace-mcp/token.json:/app/token.json",
+        "YOUR_AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/google-workspace-mcp:latest"
       ]
     }
   }
