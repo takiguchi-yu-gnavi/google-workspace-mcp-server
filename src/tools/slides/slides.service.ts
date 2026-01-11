@@ -1,8 +1,8 @@
-import { BaseCommandService } from '@/tools/base/service.interface.js';
-import { CreatePresentationCommand } from '@/tools/slides/commands/create-presentation.command.js';
-import { GetPageCommand } from '@/tools/slides/commands/get-page.command.js';
-import { GetPresentationCommand } from '@/tools/slides/commands/get-presentation.command.js';
-import { ListPresentationsCommand } from '@/tools/slides/commands/list-presentations.command.js';
+import { BaseCommandService } from '../base/service.interface.js';
+import { CreatePresentationCommand } from './commands/create-presentation.command.js';
+import { GetPageCommand } from './commands/get-page.command.js';
+import { GetPresentationCommand } from './commands/get-presentation.command.js';
+import { ListPresentationsCommand } from './commands/list-presentations.command.js';
 
 /**
  * Google Slides サービス

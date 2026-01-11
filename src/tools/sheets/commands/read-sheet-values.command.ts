@@ -1,9 +1,9 @@
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
-import type { Command } from '@/tools/base/command.interface.js';
-import { createErrorResult } from '@/tools/base/command.interface.js';
-import type { ToolArgs, ToolDefinition } from '@/types/mcp.js';
+import type { ToolArgs, ToolDefinition } from '../../../types/mcp.js';
+import type { Command } from '../../base/command.interface.js';
+import { createErrorResult } from '../../base/command.interface.js';
 
 /**
  * スプレッドシートのセル範囲のデータを読み取るコマンド

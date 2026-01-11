@@ -1,7 +1,7 @@
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { OAuth2Client } from 'google-auth-library';
-import type { Command } from '@/tools/base/command.interface.js';
-import type { ToolArgs, ToolDefinition } from '@/types/mcp.js';
+import type { Command } from './command.interface.js';
+import type { ToolArgs, ToolDefinition } from '../../types/mcp.js';
 
 /**
  * すべての Google Workspace サービスが実装すべきインターフェース

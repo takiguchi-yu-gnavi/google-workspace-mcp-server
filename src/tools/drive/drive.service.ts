@@ -1,6 +1,6 @@
-import { BaseCommandService } from '@/tools/base/service.interface.js';
-import { ListDriveItemsCommand } from '@/tools/drive/commands/list-drive-items.command.js';
-import { SearchDriveFilesCommand } from '@/tools/drive/commands/search-drive-files.command.js';
+import { BaseCommandService } from '../base/service.interface.js';
+import { ListDriveItemsCommand } from './commands/list-drive-items.command.js';
+import { SearchDriveFilesCommand } from './commands/search-drive-files.command.js';
 
 /**
  * Google Drive サービス

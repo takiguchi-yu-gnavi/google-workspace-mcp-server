@@ -1,5 +1,5 @@
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import type { ToolArgs, ToolDefinition } from '@/types/mcp.js';
+import type { ToolArgs, ToolDefinition } from '../../types/mcp.js';
 
 /**
  * 各コマンドが実装すべきインターフェース
